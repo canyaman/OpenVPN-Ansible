@@ -1,0 +1,3 @@
+---
+- name: activate swapfile 
+  command: chdir=/usr/share /sbin/swapon /swapfile

@@ -1,0 +1,23 @@
+---
+- name: Install OpenVPN
+  yum: name=openvpn state=present
+
+- name: install openssl
+  yum: pkg=openssl state=present
+
+- name: copy keyfiles
+  copy: src=keys dest=/etc/openvpn
+
+- name: generate config file
+  template: src=server.conf.j2 dest=/etc/openvpn/server.conf
+
+- name: set net.ipv4.ip_forward rule
+  template: src=sysctl.conf.j2 dest=/etc/sysctl.conf
+  notify: save sysctl
+
+- name: deploy iptables rules
+  template: src=iptables-save dest=/etc/sysconfig/iptables
+  notify: restart iptables
+
+- name: start openvpn
+  service: name=openvpn state=started enabled=yes

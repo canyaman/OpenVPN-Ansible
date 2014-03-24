@@ -1,0 +1,5 @@
+# Here are variables related to the VPN installation
+
+port: 1194
+
+protocol: udp 

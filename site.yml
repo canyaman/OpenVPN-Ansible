@@ -1,0 +1,9 @@
+---
+# This playbook deploys a simple standalone Jenkins Server behind Nginx web server server. 
+
+- hosts: vpn-servers
+  user: root
+
+  roles:
+  - common
+  - vpn

@@ -1,0 +1,25 @@
+---
+- name: GET epel-repo rpm RHEL6
+  get_url: dest=/opt/epel-release.rpm url=http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+
+- name: install epel-repo rpm
+  yum: pkg=/opt/epel-release.rpm state=installed
+
+- name: GET remi-repo rpm RHEL6
+  get_url: dest=/opt/remi-release.rpm url=http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+
+- name: install remi-repo rpm
+  yum: pkg=/opt/remi-release.rpm state=installed
+
+- name: Create swap file
+  command: chdir=/usr/share /bin/dd if=/dev/zero of=/swapfile bs=8192 count=524288 creates=/swapfile
+  notify: activate swapfile
+
+- name: Set swap file as swap area
+  command: chdir=/usr/share /sbin/mkswap -f /swapfile  
+
+- name: Mount swap file
+  mount: name=/swapfile src=swap state=present fstype=swap opts=defaults
+
+- name: Swap permission
+  file: path=/swapfile mode=0600 owner=root group=root
